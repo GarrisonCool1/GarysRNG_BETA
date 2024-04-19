@@ -20,7 +20,7 @@ const rarities = [
   { name: "Divine", probability: 0.0078125, color: "lightblue" },
   { name: "Celestial", probability: 0.00390625, color: "white" },
   { name: "Jackpot", probability: 0.001953125, color: "lawngreen" },
-  { name: "True Luck", probability: 0.0009765625, color: "darkcyan" },
+  { name: "True Luck", probability: 0.0009765625, color: "darkcyan" }, 
   { name: "BUY A LOTTERY TICKET", probability: 0.0009765625, color: "pink" }
 ];
 
