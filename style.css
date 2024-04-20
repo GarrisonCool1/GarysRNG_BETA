@@ -24,15 +24,14 @@ h1 {
   font-weight: bold;
   width: 100%;
   top: 15%;
-  font-size: 36px;
+  font-size: 50px;
 }
 
 h2 {
   text-align: center;
   font-weight: bold;
   width: 100%;
-  top: 5%;
-  font-size: 20px;
+  font-size: 30px;
 }
 
 button {
@@ -93,4 +92,60 @@ button {
   bottom: 20px;
   left: calc(50% + 156px);
   transform: translateX(-50%);
+}
+
+#closeCollectionButton {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  /* Add padding to create space around the button */
+  background-color: #ffffff;
+  /* Set background color to white */
+  border: 2px solid black;
+  /* Add a black border around the button */
+  width: 50px;
+  /* Set width and height to make the box square */
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#closeCollectionButton img {
+  width: 20px;
+  /* Reduce the size of the X button */
+  height: 20px;
+}
+
+#indexDataContainer {
+  width: 400px;
+  margin: 0 auto;
+  text-align: left;
+  background-color: #f0f0f0;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 40px 20px 20px;
+  /* Adjust top padding to move the text down */
+  position: fixed;
+  top: 15%;
+  left: 15%;
+  transform: translateX(-50%, -50%);
+  z-index: 103;
+}
+
+#indexDataList {
+  list-style: none;
+  padding: 0;
+}
+
+#indexDataList li {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+body {
+  font-family: "Trebuchet MS", sans-serif;
 }
