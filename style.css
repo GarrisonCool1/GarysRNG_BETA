@@ -119,6 +119,13 @@ button {
   height: 20px;
 }
 
+.index {
+  position: relative;
+  /* Added */
+  width: 100%;
+  /* Added */
+}
+
 #indexDataContainer {
   width: 400px;
   margin: 0 auto;
@@ -126,24 +133,22 @@ button {
   background-color: #f0f0f0;
   border: 2px solid black;
   border-radius: 10px;
-  padding: 40px 20px 20px;
-  /* Adjust top padding to move the text down */
   position: fixed;
-  top: 15%;
-  left: 15%;
-  transform: translateX(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 103;
 }
 
 #indexDataList {
   list-style: none;
-  padding: 0;
+  padding: 50px 12px 20px;
 }
 
 #indexDataList li {
   font-weight: bold;
   font-size: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 body {

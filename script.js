@@ -18,7 +18,45 @@ const rarities = [
   { name: "Shining", probability: 0.0009765625, color: "pink" }
 ];
 
-let indexdata = rarities.map(rarity => ({ type: rarity.name, amount: 0 }));
+let indexdata; // Declare indexdata variable
+
+// Function to initialize indexdata from localStorage or default values
+function initializeIndexData() {
+  const storedIndexData = localStorage.getItem('indexdata');
+  if (storedIndexData) {
+    indexdata = JSON.parse(storedIndexData);
+  } else {
+    // If no data in localStorage, initialize indexdata with default values
+    indexdata = rarities.map(rarity => ({ type: rarity.name, amount: 0 }));
+  }
+}
+
+// Call the function to initialize indexdata when the page loads
+initializeIndexData();
+
+// Function to save indexdata to localStorage
+function saveIndexData() {
+  localStorage.setItem('indexdata', JSON.stringify(indexdata));
+}
+
+// Call the function to save indexdata whenever it's updated
+function updateIndexData() {
+  saveIndexData();
+  drawIndexData(); // Update the displayed index data
+}
+
+// Update indexdata whenever it's changed
+// For example, in rollRarities function:
+// const indexToUpdate = rarities.findIndex(rarity => rarity.name === finalRarity.name);
+// if (indexToUpdate !== -1) {
+//   indexdata[indexToUpdate].amount++;
+//   updateIndexData(); // Call updateIndexData to save and display updated indexdata
+// }
+
+// Function to clear indexdata from localStorage
+function clearIndexData() {
+  localStorage.removeItem('indexdata');
+}
 
 function drawIndexData() {
   const indexDataList = document.getElementById("indexDataList");
@@ -113,6 +151,7 @@ async function rollRarities() {
   const indexToUpdate = rarities.findIndex(rarity => rarity.name === finalRarity.name);
   if (indexToUpdate !== -1) {
     indexdata[indexToUpdate].amount++;
+    updateIndexData(); // Call updateIndexData to save and display updated indexdata
   }
 
   return finalRarity;
@@ -165,7 +204,6 @@ async function clicked() {
   nextButton.style.visibility = "visible";
   const rarityDiv = document.querySelector(".rarity-div");
   rarityDiv.style.visibility = "visible";
-  drawIndexData();
 }
 
 function nextclicked() {

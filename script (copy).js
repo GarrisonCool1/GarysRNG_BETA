@@ -22,22 +22,22 @@ const rarities = [
   { name: "Divine", probability: 0.0078125, color: "lightblue" },
   { name: "Celestial", probability: 0.00390625, color: "white" },
   { name: "Jackpot", probability: 0.001953125, color: "lawngreen" },
-  { name: "True Luck", probability: 0.0009765625, color: "darkcyan" }, 
+  { name: "True Luck", probability: 0.0009765625, color: "darkcyan" },
   { name: "Shining", probability: 0.0009765625, color: "pink" }
 ];
 
 var indexdata = [
-  { type: "Common", amount: 0},
-  { type: "Uncommon", amount: 0},
-  { type: "Rare", amount: 0},
-  { type: "Epic", amount: 0},
-  { type: "Legendary", amount: 0},
-  { type: "Mythical", amount: 0},
-  { type: "Divine", amount: 0},
-  { type: "Celestial", amount: 0},
-  { type: "Jackpot", amount: 0},
-  { type: "True Luck", amount: 0},
-  { type: "Shining", amount: 0},
+  { type: "Common", amount: 0 },
+  { type: "Uncommon", amount: 0 },
+  { type: "Rare", amount: 0 },
+  { type: "Epic", amount: 0 },
+  { type: "Legendary", amount: 0 },
+  { type: "Mythical", amount: 0 },
+  { type: "Divine", amount: 0 },
+  { type: "Celestial", amount: 0 },
+  { type: "Jackpot", amount: 0 },
+  { type: "True Luck", amount: 0 },
+  { type: "Shining", amount: 0 },
 ]
 
 // Function to draw indexdata array to the screen
@@ -113,7 +113,6 @@ async function rollRarities() {
   let finalRarity;
 
   while (multiplierCount < 10) {
-    let accel = 4;
     const randomNumber = Math.random() * totalProbability;
     let cumulativeProbability = 0;
     let selectedRarity;
@@ -163,14 +162,14 @@ async function rollRarities() {
 document.addEventListener('keydown', event => {
   if (event.code === 'Space') {
     if (!rollButton.disabled)
-    clicked()
+      clicked()
   }
 })
 //nextkeydown
 document.addEventListener('keydown', event => {
   if (event.code === 'Space') {
     if (!nextButton.disabled)
-    nextclicked()
+      nextclicked()
   }
 })
 //rollclick
@@ -219,7 +218,7 @@ async function clicked() {
   collection.disabled = true;
   items.disabled = true;
   const finalRarity = await rollRarities();
-  nextButton.disabled = false; 
+  nextButton.disabled = false;
   nextButton.style.visibility = "visible";
   const rarityDiv = document.querySelector(".rarity-div");
   rarityDiv.style.visibility = "visible";
