@@ -226,3 +226,29 @@ function nextclicked() {
   const rarityDiv = document.querySelector(".rarity-div");
   rarityDiv.style.visibility = "hidden";
 }
+
+//download
+
+const downloadButton = document.getElementById("downloadButton");
+
+downloadButton.addEventListener('click', () => {
+  // Define the file content (for demonstration purposes, you can adjust this as needed)
+  const fileContent = "https://github.com/GarrisonCool1/GarysRNG_BETA/archive/refs/tags/test.zip";
+
+  // Create a Blob containing the file content
+  const blob = new Blob([fileContent], { type: 'text/plain' });
+
+  // Create a temporary link element
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+
+  // Set the download attribute to specify the filename
+  link.download = 'GarysRNG.zip';
+
+  // Append the link to the document body and trigger a click event
+  document.body.appendChild(link);
+  link.click();
+
+  // Remove the link from the document body
+  document.body.removeChild(link);
+});

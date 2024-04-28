@@ -148,6 +148,24 @@ button {
   margin: 0 auto;
 }
 
+#downloadButton {
+  position: fixed;
+  top: 20px !important;
+  left: 20px !important;
+  padding: 8px 12px !important;
+  border: 2px solid #000 !important;
+  border-radius: 5px !important;
+  background-color: #fff !important;
+  cursor: pointer;
+  width: auto !important;
+  font-size: 14px !important;
+}
+
+#downloadButton:hover {
+  background-color: #f0f0f0 !important;
+}
+
+
 body {
   font-family: "Trebuchet MS", sans-serif;
 }
