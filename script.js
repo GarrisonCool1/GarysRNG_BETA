@@ -5,17 +5,17 @@ const indexdisplay = document.getElementById("index");
 const items = document.getElementById("items");
 
 const rarities = [
-  { name: "Common", probability: 0.5, color: "gray" },
-  { name: "Uncommon", probability: 0.25, color: "green" },
-  { name: "Rare", probability: 0.125, color: "blue" },
-  { name: "Epic", probability: 0.0625, color: "red" },
-  { name: "Legendary", probability: 0.03125, color: "gold" },
-  { name: "Mythical", probability: 0.015625, color: "orange" },
-  { name: "Divine", probability: 0.0078125, color: "lightblue" },
-  { name: "Celestial", probability: 0.00390625, color: "white" },
-  { name: "Jackpot", probability: 0.001953125, color: "lawngreen" },
-  { name: "True Luck", probability: 0.0009765625, color: "darkcyan" },
-  { name: "Shining", probability: 0.0009765625, color: "pink" }
+  { name: "Common", probability: 0.5, color: "gray" }, // 1 in 2
+  { name: "Uncommon", probability: 0.25, color: "green" }, // 1 in 4 
+  { name: "Rare", probability: 0.125, color: "blue" }, // 1 in 8
+  { name: "Epic", probability: 0.0625, color: "red" }, // 1 in 16
+  { name: "Legendary", probability: 0.03125, color: "gold" }, // 1 in 32
+  { name: "Mythical", probability: 0.015625, color: "orange" }, // 1 in 64
+  { name: "Divine", probability: 0.0078125, color: "lightblue" }, // 1 in 128
+  { name: "Celestial", probability: 0.00390625, color: "white" }, // 1 in 256
+  { name: "Jackpot", probability: 0.001953125, color: "lawngreen" }, // 1 in 512
+  { name: "True Luck", probability: 0.0009765625, color: "darkcyan" }, // 1 in 1024
+  { name: "Shining", probability: 0.0009765625, color: "pink" } // 1 in 1024   
 ];
 
 let indexdata; // Declare indexdata variable
@@ -45,14 +45,6 @@ function updateIndexData() {
   drawIndexData(); // Update the displayed index data
 }
 
-// Update indexdata whenever it's changed
-// For example, in rollRarities function:
-// const indexToUpdate = rarities.findIndex(rarity => rarity.name === finalRarity.name);
-// if (indexToUpdate !== -1) {
-//   indexdata[indexToUpdate].amount++;
-//   updateIndexData(); // Call updateIndexData to save and display updated indexdata
-// }
-
 // Function to clear indexdata from localStorage
 function clearIndexData() {
   localStorage.removeItem('indexdata');
@@ -60,7 +52,18 @@ function clearIndexData() {
 
 function drawIndexData() {
   const indexDataList = document.getElementById("indexDataList");
-  indexDataList.innerHTML = indexdata.map(item => `<li>${item.type}: ${item.amount}</li>`).join("");
+  indexDataList.innerHTML = "";
+  indexdata.forEach(item => {
+    const button = document.createElement("button");
+    button.textContent = `${item.type}: ${item.amount}`;
+    button.addEventListener("click", function() {
+      
+    });
+    indexDataList.appendChild(button);
+    button.style.width = "100%"; // Set the width to 100% to ensure 1 column width
+    button.style.fontSize = "20px";
+    button.style.textAlign = "left";
+  });
 }
 
 drawIndexData();
@@ -157,10 +160,19 @@ async function rollRarities() {
   return finalRarity;
 }
 
+let spaceKeyPressed = false; // Flag to track if space key is pressed
+
 document.addEventListener('keydown', event => {
-  if (event.code === 'Space') {
+  if (event.code === 'Space' && !spaceKeyPressed) {
+    spaceKeyPressed = true; // Set flag to true on initial key press
     if (!rollButton.disabled) clicked();
     if (!nextButton.disabled) nextclicked();
+  }
+});
+
+document.addEventListener('keyup', event => {
+  if (event.code === 'Space') {
+    spaceKeyPressed = false; // Reset flag on key release
   }
 });
 
@@ -177,7 +189,6 @@ collection.addEventListener('click', opencollection);
 function opencollection() {
   const indexDataContainer = document.getElementById("indexDataContainer");
   indexDataContainer.style.display = "block";
-  fadeInOverlay();
   rollButton.disabled = true;
   collection.disabled = true;
   items.disabled = true;
@@ -189,7 +200,6 @@ function closeCollection() {
   collection.disabled = false;
   items.disabled = false;
   indexDataContainer.style.display = "none";
-  fadeOutOverlay();
 }
 
 document.getElementById("closeCollectionButton").addEventListener("click", closeCollection);
