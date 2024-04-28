@@ -57,7 +57,7 @@ function drawIndexData() {
     const button = document.createElement("button");
     button.textContent = `${item.type}: ${item.amount}`;
     button.addEventListener("click", function() {
-      
+
     });
     indexDataList.appendChild(button);
     button.style.width = "100%"; // Set the width to 100% to ensure 1 column width
@@ -120,7 +120,7 @@ async function rollRarities() {
   let multiplierCount = 0;
 
   while (multiplierCount < 10) {
-    let accel = 4;
+    let accel = 1.4;
     const randomNumber = Math.random() * totalProbability;
     let cumulativeProbability = 0;
     let selectedRarity;
@@ -137,7 +137,7 @@ async function rollRarities() {
 
     function moveRarity() {
       rarityDiv.style.top = `${parseFloat(rarityDiv.style.top) + accel}px`;
-      accel /= 1.5;
+      accel /= 1.1;
       requestAnimationFrame(moveRarity);
     };
 
@@ -226,29 +226,3 @@ function nextclicked() {
   const rarityDiv = document.querySelector(".rarity-div");
   rarityDiv.style.visibility = "hidden";
 }
-
-//download
-
-const downloadButton = document.getElementById("downloadButton");
-
-downloadButton.addEventListener('click', () => {
-  // Define the file content (for demonstration purposes, you can adjust this as needed)
-  const fileContent = "https://github.com/GarrisonCool1/GarysRNG_BETA/archive/refs/tags/test.zip";
-
-  // Create a Blob containing the file content
-  const blob = new Blob([fileContent], { type: 'text/plain' });
-
-  // Create a temporary link element
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-
-  // Set the download attribute to specify the filename
-  link.download = 'GarysRNG.zip';
-
-  // Append the link to the document body and trigger a click event
-  document.body.appendChild(link);
-  link.click();
-
-  // Remove the link from the document body
-  document.body.removeChild(link);
-});
