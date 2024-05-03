@@ -44,10 +44,17 @@ function drawIndexData() {
     rarities.forEach(rarity => {
         const indexItem = indexdata.find(item => item.name === rarity.name);
         const button = document.createElement("button");
+      // if you have the rarity, display it.
+      if (indexItem ? indexItem.amount : 0 != 0) {
         button.textContent = `${rarity.name}: ${indexItem ? indexItem.amount : 0}`;
         button.addEventListener("click", function() {
-            // Handle click event if needed
+          let selected = (rarity.name)
+          console.log(selected);
+            // Buttonclick
         });
+      } else {
+        button.textContent = "???";
+      }
         indexDataList.appendChild(button);
         button.style.width = "100%";
         button.style.fontSize = "20px";
@@ -77,7 +84,6 @@ function generateRandomRarity() {
 }
 
 function displayRarity(rarity) {
-  // Remove existing rarity div
   const existingRarityDiv = document.querySelector(".rarity-div");
   if (existingRarityDiv) {
     existingRarityDiv.remove();
@@ -109,7 +115,7 @@ function displayRarity(rarity) {
   const rarityProbability = document.createElement("div");
   rarityProbability.textContent = `1 in ${rarity.probability}`;
   rarityProbability.style.fontSize = "20px";
-  rarityProbability.style.color = "white"; // Set text color to white
+  rarityProbability.style.color = "white";
   rarityDiv.appendChild(rarityProbability);
 
   document.body.appendChild(rarityDiv);
@@ -151,6 +157,7 @@ async function rollRarities() {
 
     await new Promise(resolve => setTimeout(resolve, animateTime));
 
+    finalClass = selectedRarity.class;
     finalRarity = selectedRarity;
   }
 
@@ -162,14 +169,17 @@ async function rollRarities() {
     updateIndexData();
   }
 
+  //log what you got
+  console.log(`Rolled: ${finalRarity.name}, Class: ${finalRarity.class}`);
+  
   return finalRarity;
 }
 
-let spaceKeyPressed = false; // Flag to track if space key is pressed
+let spaceKeyPressed = false;
 
 document.addEventListener('keydown', event => {
   if (event.code === 'Space' && !spaceKeyPressed) {
-    spaceKeyPressed = true; // Set flag to true on initial key press
+    spaceKeyPressed = true;
     if (!rollButton.disabled) clicked();
     if (!nextButton.disabled) nextclicked();
   }
@@ -177,7 +187,7 @@ document.addEventListener('keydown', event => {
 
 document.addEventListener('keyup', event => {
   if (event.code === 'Space') {
-    spaceKeyPressed = false; // Reset flag on key release
+    spaceKeyPressed = false;
   }
 });
 

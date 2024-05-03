@@ -11,7 +11,7 @@ const rarities = [
   { name: "Crystallized", probability: 64, color: "darkorchid", font: "sans-serif", class: "Advanced" }, // 1 in 64
   { name: "Rage", probability: 128, color: "crimson", font: "sans-serif", class: "Advanced" }, // 1 in 128
   { name: "Topaz", probability: 150, color: "yellow", font: "sans-serif", class: "Advanced" }, // 1 in 150
-  { name: "Glacier", probability: 256, color: "paleturquoisea", font: "sans-serif", class: "Advanced" }, // 1 in 256
+  { name: "Glacier", probability: 256, color: "paleturquoise", font: "sans-serif", class: "Advanced" }, // 1 in 256
   { name: "Wind", probability: 300, color: "mediumturquoise", font: "sans-serif", class: "Advanced" }, // 1 in 300
   { name: "Ruby", probability: 350, color: "indianred", font: "sans-serif", class: "Advanced" }, // 1 in 350
   { name: "Emerald", probability: 500, color: "greenyellow", font: "sans-serif", class: "Advanced" }, // 1 in 500
