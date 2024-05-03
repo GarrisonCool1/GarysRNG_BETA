@@ -4,57 +4,30 @@ const collection = document.getElementById("collection");
 const indexdisplay = document.getElementById("index");
 const items = document.getElementById("items");
 
-let indexdata; // Declare indexdata variable
 
-// Function to initialize indexdata from localStorage or default values
-function initializeIndexData() {
-    const storedIndexData = JSON.parse(localStorage.getItem('indexdata'));
-    if (storedIndexData) {
-        indexdata = storedIndexData;
-    } else {
-        indexdata = rarities.map(rarity => ({ name: rarity.name, amount: 0 }));
-    }
-}
 
-function updateLocalStorage() {
-    localStorage.setItem('indexdata', JSON.stringify(indexdata));
-}
-
-function clearLocalStorage() {
-    localStorage.clear();
-}
-
-initializeIndexData();
-
-console.log(indexdata)
-
+// Call the function to save indexdata whenever it's updated
 function updateIndexData() {
-  drawIndexData(); // Update the displayed index data
-  updateLocalStorage();
-}
-
-// Function to clear indexdata from localStorage
-function clearIndexData() {
-  localStorage.removeItem('indexdata');
+  rarities.forEach((rarity, index) => {
+    indexdata[index].amount = rarity.amount;
+  });
+  drawIndexData();
 }
 
 function drawIndexData() {
-    const indexDataList = document.getElementById("indexDataList");
-    indexDataList.innerHTML = "";
-    rarities.forEach(rarity => {
-        const indexItem = indexdata.find(item => item.name === rarity.name);
-        const button = document.createElement("button");
-        button.textContent = `${rarity.name}: ${indexItem ? indexItem.amount : 0}`;
-        button.addEventListener("click", function() {
-            // Handle click event if needed
-        });
-        indexDataList.appendChild(button);
-        button.style.width = "100%";
-        button.style.fontSize = "20px";
-        button.style.textAlign = "left";
+  const indexDataList = document.getElementById("indexDataList");
+  indexDataList.innerHTML = "";
+  rarities.forEach(item => {
+    const button = document.createElement("button");
+    button.textContent = `${item.name}: ${item.amount}`;
+    button.addEventListener("click", function() {
     });
+    indexDataList.appendChild(button);
+    button.style.width = "100%"; // Set the width to 100% to ensure 1 column width
+    button.style.fontSize = "20px";
+    button.style.textAlign = "left";
+  });
 }
-
 
 drawIndexData();
 
@@ -95,12 +68,6 @@ function displayRarity(rarity) {
     text-align: center;
   `;
 
-  const rarityClass = document.createElement("div");
-  rarityClass.textContent = `  ${rarity.class}`;
-  rarityClass.style.fontSize = "20px";
-  rarityClass.style.color = "white";
-  rarityDiv.appendChild(rarityClass);
-
   const rarityName = document.createElement("div");
   rarityName.textContent = rarity.name;
   rarityName.style.fontSize = "50px";
@@ -111,9 +78,15 @@ function displayRarity(rarity) {
   rarityProbability.style.fontSize = "20px";
   rarityProbability.style.color = "white"; // Set text color to white
   rarityDiv.appendChild(rarityProbability);
+  
+  const rarityClass = document.createElement("div");
+  rarityClass.textContent = `  ${rarity.class}`;
+  rarityClass.style.fontSize = "20px";
+  rarityClass.style.color = "white";
+  rarityDiv.appendChild(rarityClass);
 
   document.body.appendChild(rarityDiv);
-
+  
   return rarityDiv;
 }
 
@@ -154,16 +127,15 @@ async function rollRarities() {
     finalRarity = selectedRarity;
   }
 
-  //createParticles(finalRarity.name);
-
   const indexToUpdate = rarities.findIndex(rarity => rarity.name === finalRarity.name);
   if (indexToUpdate !== -1) {
-    indexdata[indexToUpdate].amount++;
-    updateIndexData();
+    rarities[indexToUpdate].amount++;
+    updateIndexData(); // Update the index data
   }
 
   return finalRarity;
 }
+
 
 let spaceKeyPressed = false; // Flag to track if space key is pressed
 
@@ -232,7 +204,3 @@ function nextclicked() {
   const rarityDiv = document.querySelector(".rarity-div");
   rarityDiv.style.visibility = "hidden";
 }
-
-
-
-

@@ -5,25 +5,30 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Gary's RNG</title>
+  <link rel="icon" type="image/png" href="Assets/Title.png">
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
   <h1>Gary's RNG</h1>
-  <h2>Beta 2.4</h2>
+  <h2>Beta 3</h2>
   <div class="index">
     <div class="btn-container">
       <button id="rollButton">Roll</button>
       <button id="collection"><img src="Assets/Folder.png" style="width:40px;height:40px;"></button>
       <button id="items"><img src="Assets/Star.png" style="width:40px;height:40px;"></button>
     </div>
-    <button id="nextButton" disabled style="visibility: hidden; z-index: 101;">Next</button>
+    <button id="nextButton" disabled style="visibility: hidden; z-index: 102;">Next</button>
     <div id="indexDataContainer" style="display: none;">
       <ul id="indexDataList"></ul>
       <button id="closeCollectionButton"><img src="Assets/close.svg"></img></button>
     </div>
   </div>
+  <div id="particles-js" style="position: absolute; top: 0; bottom: 1%; z-index: 101;"></div>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<!--   <script src="resultAnimations</script> 
+    -->
+  <script src="allRaritys.js"></script>
   <script src="script.js"></script>
 </body>
-
 </html>
