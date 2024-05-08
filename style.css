@@ -41,13 +41,13 @@ button {
   font-size: 30px;
   font-weight: bold;
   padding: 20px 60px;
-  border: 3px solid;
+  border: 3px solid black;
   border-radius: 10px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #f0f0f0;
+button:not([disabled]):hover {
+  background-color: lightgray;
 }
 
 .btn-container {
@@ -55,7 +55,6 @@ button:hover {
   justify-content: center;
   position: fixed;
   bottom: 20px;
-  /* Move the button slightly up */
   width: 100%;
 }
 
@@ -105,6 +104,21 @@ button:hover {
 #closeCollectionButton {
   position: fixed;
   top: 10px;
+  left: 10px;
+  padding: 5px;
+  background-color: #ffffff;
+  border: 2px solid black;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#clearbutton {
+  position: fixed;
+  top: 70px;
   left: 10px;
   padding: 5px;
   background-color: #ffffff;

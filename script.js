@@ -2,26 +2,48 @@ const rollButton = document.getElementById("rollButton");
 const nextButton = document.getElementById("nextButton");
 const collection = document.getElementById("collection");
 const indexdisplay = document.getElementById("index");
+const clearbutton = document.getElementById("clearbutton");
 const items = document.getElementById("items");
+
+var currentRarity
+
+const cutscene = document.createElement("div");
+cutscene.id = "cutscene";
+cutscene.className = "cutscene";
+cutscene.style.zIndex = "200"
+cutscene.style.position = "fixed";
+cutscene.style.top = "0";
+cutscene.style.left = "0";
+cutscene.style.width = "100%";
+cutscene.style.height = "0%";
+cutscene.style.opacity = "0";
+cutscene.style.disabled = true;
+cutscene.style.transition = "color 2s"
+
 
 let indexdata; // Declare indexdata variable
 
-// Function to initialize indexdata from localStorage or default values
+let rolldata; // Declare rolldata variable
+
 function initializeIndexData() {
-    const storedIndexData = JSON.parse(localStorage.getItem('indexdata'));
-    if (storedIndexData) {
-        indexdata = storedIndexData;
-    } else {
-        indexdata = rarities.map(rarity => ({ name: rarity.name, amount: 0 }));
-    }
+  const storedIndexData = JSON.parse(localStorage.getItem('indexdata'));
+  const storedRollData = JSON.parse(localStorage.getItem('rolldata'));
+  if (storedIndexData) {
+    indexdata = storedIndexData;
+    rolldata = storedRollData
+  } else {
+    indexdata = rarities.map(rarity => ({ name: rarity.name, amount: 0 }));
+    rolldata = 0
+  }
 }
 
 function updateLocalStorage() {
-    localStorage.setItem('indexdata', JSON.stringify(indexdata));
+  localStorage.setItem('indexdata', JSON.stringify(indexdata));
+  localStorage.setItem('rolldata', JSON.stringify(rolldata));
 }
 
 function clearLocalStorage() {
-    localStorage.clear();
+  localStorage.clear();
 }
 
 initializeIndexData();
@@ -33,57 +55,63 @@ function updateIndexData() {
   updateLocalStorage();
 }
 
-// Function to clear indexdata from localStorage
-function clearIndexData() {
-  localStorage.removeItem('indexdata');
-}
-
 function drawIndexData() {
-    const indexDataList = document.getElementById("indexDataList");
-    indexDataList.innerHTML = "";
-    rarities.forEach(rarity => {
-        const indexItem = indexdata.find(item => item.name === rarity.name);
-        const button = document.createElement("button");
-      // if you have the rarity, display it.
-      if (indexItem ? indexItem.amount : 0 != 0) {
-        button.textContent = `${rarity.name}: ${indexItem ? indexItem.amount : 0}`;
-        button.addEventListener("click", function() {
-          let selected = (rarity.name)
-          console.log(selected);
-            // Buttonclick
-        });
-      } else {
-        button.textContent = "???";
-      }
-        indexDataList.appendChild(button);
-        button.style.width = "100%";
-        button.style.fontSize = "20px";
-        button.style.textAlign = "left";
-    });
+  const indexDataList = document.getElementById("indexDataList");
+  indexDataList.innerHTML = "";
+  rarities.forEach(rarity => {
+    const indexItem = indexdata.find(item => item.name === rarity.name);
+    const button = document.createElement("button");
+    // if you have the rarity, display it.
+    if (indexItem ? indexItem.amount : 0 != 0) {
+      button.textContent = `${rarity.name}: ${indexItem ? indexItem.amount : 0}`;
+      button.addEventListener("click", function() {
+        // Buttonclick
+      });
+    } else {
+      button.textContent = "???";
+    }
+    indexDataList.appendChild(button);
+    button.style.width = "100%";
+    button.style.fontSize = "20px";
+    button.style.textAlign = "left";
+  });
 }
-
 
 drawIndexData();
 
+let luck = 1;
+
+function adjustProbability(probability, rarityIndex) {
+  return probability / (luck * (rarityIndex + 1));
+}
+
 function generateRandomRarity() {
-  let totalProbability = 0;
-  rarities.forEach(rarity => {
-    totalProbability += 1 / rarity.probability;
+  let totalAdjustedProbability = 0;
+
+  // Adjust probabilities for all rarities
+  rarities.forEach((rarity, index) => {
+    totalAdjustedProbability += 1 / adjustProbability(rarity.probability, index);
   });
-  const randomNumber = Math.random() * totalProbability;
-  let cumulativeProbability = 0;
+
+  const randomNumber = Math.random() * totalAdjustedProbability;
+  let cumulativeAdjustedProbability = 0;
   let selectedRarity;
-  for (const rarity of rarities) {
-    cumulativeProbability += 1 / rarity.probability;
-    if (randomNumber <= cumulativeProbability) {
+
+  // Choose rarity based on adjusted probabilities
+  for (const [index, rarity] of rarities.entries()) {
+    cumulativeAdjustedProbability += 1 / adjustProbability(rarity.probability, index);
+
+    if (randomNumber <= cumulativeAdjustedProbability) {
       selectedRarity = rarity;
       break;
     }
   }
+
   return selectedRarity || rarities[rarities.length - 1];
 }
 
 function displayRarity(rarity) {
+
   const existingRarityDiv = document.querySelector(".rarity-div");
   if (existingRarityDiv) {
     existingRarityDiv.remove();
@@ -95,7 +123,7 @@ function displayRarity(rarity) {
     font-family: ${rarity.font};
     color: ${rarity.color};
     position: fixed;
-    top: 300%; /* Adjusted to keep it centered */
+    top: 300%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -123,7 +151,6 @@ function displayRarity(rarity) {
   return rarityDiv;
 }
 
-
 const overlay = document.createElement("div");
 overlay.className = "overlay";
 document.body.appendChild(overlay);
@@ -132,17 +159,39 @@ overlay.classList.add("fade-out");
 function fadeOutOverlay() { overlay.classList.add("fade-out"); }
 function fadeInOverlay() { overlay.classList.remove("fade-out"); }
 
+document.body.appendChild(cutscene);
+function fadeOutCutscene() {
+  cutscene.style.height = "0%";
+  cutscene.style.opacity = "0";
+}
+
+function fadeInCutscene() {
+  cutscene.style.height = "100%";
+  cutscene.style.backgroundColor = "black";
+  cutscene.style.transition = "opacity 0.4s";
+  cutscene.style.opacity = "100";
+
+  setTimeout(() => {
+    cutscene.style.transition = "background-color 3s";
+    cutscene.style.backgroundColor = currentRarity.color;
+  }, 1000);
+}
+
 async function rollRarities() {
   let animateTime = 10;
   const multiplier = 30;
   let finalRarity;
   let multiplierCount = 0;
 
+  let selectedRarity
+
+  var rarityDiv
+
   while (multiplierCount < 10) {
     let accel = 1.4;
-    const selectedRarity = generateRandomRarity();
+    selectedRarity = generateRandomRarity();
 
-    const rarityDiv = displayRarity(selectedRarity);
+    rarityDiv = displayRarity(selectedRarity);
 
     function moveRarity() {
       rarityDiv.style.top = `${parseFloat(rarityDiv.style.top) + accel}px`;
@@ -161,8 +210,20 @@ async function rollRarities() {
     finalRarity = selectedRarity;
   }
 
-  //createParticles(finalRarity.name);
+  currentRarity = finalRarity;
+  
+  if (finalRarity.class === "Exotic" || finalRarity.class === "Mythical") {
+    fadeInCutscene();
+    setTimeout(function() {
+      fadeOutCutscene();
+      shake(rarityDiv, 1000);
+    }, 3000);
 
+  }
+
+
+  //createParticles(finalRarity.name);
+  rolldata += 1;
   const indexToUpdate = rarities.findIndex(rarity => rarity.name === finalRarity.name);
   if (indexToUpdate !== -1) {
     indexdata[indexToUpdate].amount++;
@@ -170,8 +231,8 @@ async function rollRarities() {
   }
 
   //log what you got
-  console.log(`Rolled: ${finalRarity.name}, Class: ${finalRarity.class}`);
-  
+  console.log(`Rolled: ${finalRarity.name}, Class: ${finalRarity.class}. That was your ${rolldata} roll.`);
+
   return finalRarity;
 }
 
@@ -200,6 +261,14 @@ nextButton.addEventListener('click', () => {
 });
 
 collection.addEventListener('click', opencollection);
+
+clearbutton.addEventListener('click', () => {
+  if (window.confirm("Are you sure you want to clear your collection?")) {
+    clearLocalStorage();
+    initializeIndexData();
+    drawIndexData();
+  }
+});
 
 function opencollection() {
   const indexDataContainer = document.getElementById("indexDataContainer");
@@ -243,6 +312,26 @@ function nextclicked() {
   rarityDiv.style.visibility = "hidden";
 }
 
+function shake(rarityDiv, duration) {
+  const shakeSteps = 100;
+  const shakeSize = 50;
+  const shakeDecay = 1.05;
+  const originalTransform = rarityDiv.style.transform || '';
 
+  const interval = duration / shakeSteps;
+  let currentStep = 0;
+  let intensity = shakeSize;
 
+  const shakeInterval = setInterval(() => {
+    rarityDiv.style.transform = `${originalTransform} translate(${(Math.random() * intensity) - (intensity / 2)}px, ${Math.random() * intensity - intensity / 2}px)`;
 
+    currentStep++;
+
+    console.log(intensity)
+    intensity /= shakeDecay;
+
+    if (currentStep >= shakeSteps) {
+      clearInterval(shakeInterval);
+    }
+  }, interval);
+}
